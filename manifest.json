@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "OpenStack Chrome",
+  "description": "OpenStack extension for chrome",
+  "version": "1.0",
+
+  "permissions": [
+    "<all_urls>"
+  ],
+  "browser_action": {
+    
+    "default_popup": "index.html"
+  }
+}
