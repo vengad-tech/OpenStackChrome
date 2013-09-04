@@ -1,36 +1,48 @@
 
+function Nova()
+{
 //Server Configuration
-settings = {}
-settings.url = "http://localhost:5000/v2.0/tokens"
-settings.username = "admin"
-settings.password = "admin"
-settings.tenantId = "45ab8b75ab3e4d3b9ec34d37886e6ba8"
-settings.access_token=""
+this.settings = {}
+this.settings.url = "http://localhost:5000/v2.0/tokens"
+this.settings.username = "admin"
+this.settings.password = "admin"
+this.settings.tenantId = "45ab8b75ab3e4d3b9ec34d37886e6ba8"
+this.settings.access_token =""
 
 
 //Intialize the connection parameters
-function Init(url,username,password,tenantId)
+this.Init =function(url,username,password,tenantId,success)
 {
 
-	settings.url = url;
-	settings.username = username;
-	settings.password = password;
-	settings.tenantId = tenantId;
-	fetch_access_token();
+	this.settings.url = url+"v2.0/tokens";
+	this.settings.username = username;
+	this.settings.password = password;
+	this.settings.tenantId = tenantId;
+	this.fetch_access_token();
+    this.success = success;
 
 }
 
 //Utility function to fetch access token id and nova endpoint
-function fetch_access_token()
+this.fetch_access_token =  function()
 {
 var xhr = new XMLHttpRequest();
-xhr.open('POST', settings.url, true);
+xhr.open('POST', this.settings.url, true);
+var parent = this;
 xhr.setRequestHeader('Content-type', 'application/json');
 xhr.onload = function () {
     // do something to response
     console.log(this.responseText);
+
     var response = JSON.parse(this.responseText);
-    settings.access_token = response.access.token.id;
+    try{
+    parent.access_token = response.access.token.id;
+    }
+    catch(err){
+        console.log("Error in json");
+        parent.success('error');
+        return;
+    }
     console.log("Obtained Token id"+response.access.token.id);
     //Fetching Nova Endpoint URL
     //console.log(response.access.serviceCatalog);
@@ -41,8 +53,10 @@ xhr.onload = function () {
     	//console.log(JSON.stringify(service));
     	if(service.name=='nova')
     	{
-    		settings.nova_url = service.endpoints[0].publicURL;
-    		console.log("Found Nova endpoint at "+settings.nova_url);
+    		parent.nova_url = service.endpoints[0].publicURL;
+    		console.log("Found Nova endpoint at "+parent.nova_url);
+            parent.success('ok');
+
     	}
     }
 
@@ -50,19 +64,21 @@ xhr.onload = function () {
 
 
 };
-xhr.send('{"auth":{"passwordCredentials":{"username": "'+settings.username+'", "password":"'+settings.password+'"}, "tenantId":"'+settings.tenantId+'"}}');
+xhr.onerror = function(){this.success('error')};
+xhr.onabort = function(){this.success('error')};
+xhr.send('{"auth":{"passwordCredentials":{"username": "'+this.settings.username+'", "password":"'+this.settings.password+'"}, "tenantId":"'+this.settings.tenantId+'"}}');
 console.log('sent request');
 }
 
 
-function list_images()
+this.list_images = function()
 {
 	//request we need to make
 	request_service = "/images/detail";
 	var xhr = new XMLHttpRequest();
-xhr.open('GET', settings.nova_url+request_service, true);
+xhr.open('GET', this.settings.nova_url+request_service, true);
 xhr.setRequestHeader('Content-type', 'application/json');
-xhr.setRequestHeader('X-Auth-Token', settings.access_token);
+xhr.setRequestHeader('X-Auth-Token', this.settings.access_token);
 xhr.onload = function () {
     // do something to response
     //console.log(this.responseText);
@@ -87,14 +103,14 @@ console.log('sent request for listing images');
 
 
 
-function list_servers()
+this.list_servers=function()
 {
 	//request we need to make
 	request_service = "/servers/detail";
 	var xhr = new XMLHttpRequest();
-xhr.open('GET', settings.nova_url+request_service, true);
+xhr.open('GET', this.settings.nova_url+request_service, true);
 xhr.setRequestHeader('Content-type', 'application/json');
-xhr.setRequestHeader('X-Auth-Token', settings.access_token);
+xhr.setRequestHeader('X-Auth-Token', this.settings.access_token);
 xhr.onload = function () {
     // do something to response
     //console.log(this.responseText);
@@ -122,12 +138,6 @@ console.log('sent request for listing images');
 
 
 
-$(document).ready(function(){
 
 
-$( "#perform" ).click(function() {
-	fetch_access_token();
-  
-});
-
-});
+};

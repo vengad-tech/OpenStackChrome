@@ -10,15 +10,26 @@
 	
 
 	<script type="text/javascript" src="js/stack.js">
+	
 	</script>
+	<script type="text/javascript" src="js/events.js"></script>
 	</head>
 	<body>
-		<div >
-			<table class="table">
-
-  
-			</table>
-		</div>
-		<input id="perform" type="button" value="Click me"> </input>
+	
+  <fieldset>
+    <legend>OpenStack Login</legend>
+    
+    Host:<input id="url" type="text" placeholder="http://localhost/" value="http://localhost:5000/">
+    Username:<input id = "username" type="text" placeholder="username" value="admin">
+    Password:<input id="password" type="text" placeholder="password" value="admin">
+     tentantID:<input id="tentantid" type="text" placeholder="tenantid" value="45ab8b75ab3e4d3b9ec34d37886e6ba8">
+   
+    <button id="loginBtn"  class="btn">Login</button>
+  </fieldset>
+<div class="error" style="display:none">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Error!</strong> Unable to log you in
+</div>
+		
 	</body>
 	</html>
