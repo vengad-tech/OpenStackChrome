@@ -1,0 +1,22 @@
+<table class="table table-hover">
+  <thead>
+  <tr> 
+  		<th>Instance Name</th>
+  		<th>Status</th>
+ </tr>
+
+  </thead>
+  <tbody>
+  {{#instances}}
+  <tr>
+	  <td>
+	  {{name}}
+
+	  </td>
+	  <td>
+	  {{status}}
+	  </td>
+  </tr>
+  {{/instances}}
+  </tbody>
+</table>
