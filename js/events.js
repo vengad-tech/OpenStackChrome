@@ -1,4 +1,14 @@
+//check if already logged in
+if(localStorage.isLogin=="true")
+{
+window.location.assign("./instances.html");
+}
+
 $(document).ready(function(){
+
+
+
+
 	console.log("Extension loaded");
 $("#loginBtn").click(function(){
 console.log("Handling Login event");
@@ -12,8 +22,16 @@ var tentantId = $("#tentantid").val();
 //lets try to log in
 try{
 nova.Init(url,username,password,tentantId,function(status){
+	//on successful login
 if(status=="ok")
+{
 	console.log("Logged in successfully accesstoken"+nova.settings.access_token);
+	//redirecting to page that displays running instances
+	localStorage.isLogin = true;
+
+	window.location.assign("./instances.html")
+
+}
 else
 {
 	console.log("Unable to log you you in check credentials and connection");

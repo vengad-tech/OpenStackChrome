@@ -10,6 +10,9 @@ this.settings.tenantId = "45ab8b75ab3e4d3b9ec34d37886e6ba8"
 this.settings.access_token =""
 
 
+
+
+
 //Intialize the connection parameters
 this.Init =function(url,username,password,tenantId,success)
 {
@@ -20,8 +23,30 @@ this.Init =function(url,username,password,tenantId,success)
 	this.settings.tenantId = tenantId;
 	this.fetch_access_token();
     this.success = success;
+    localStorage.url = url;
+
+
 
 }
+
+
+//Intialize to call when we are already authorized
+this.Load =function()
+{
+
+  this.settings.url =  localStorage.url;
+  console.log("Loaded url "+this.settings.url);
+   this.settings.access_token =  localStorage.access_token;
+   console.log("Loaded access_token"+this.settings.access_token);
+    this.settings.nova_url = localStorage.nova_url;
+    console.log("Loaded nova url "+this.settings.nova_url);
+
+   
+
+};
+
+
+
 
 //Utility function to fetch access token id and nova endpoint
 this.fetch_access_token =  function()
@@ -37,6 +62,7 @@ xhr.onload = function () {
     var response = JSON.parse(this.responseText);
     try{
     parent.access_token = response.access.token.id;
+    localStorage.access_token = response.access.token.id;
     }
     catch(err){
         console.log("Error in json");
@@ -44,6 +70,8 @@ xhr.onload = function () {
         return;
     }
     console.log("Obtained Token id"+response.access.token.id);
+   
+    
     //Fetching Nova Endpoint URL
     //console.log(response.access.serviceCatalog);
     for(i = 0 ; i < response.access.serviceCatalog.length ; i++)
@@ -55,6 +83,7 @@ xhr.onload = function () {
     	{
     		parent.nova_url = service.endpoints[0].publicURL;
     		console.log("Found Nova endpoint at "+parent.nova_url);
+            localStorage.nova_url = service.endpoints[0].publicURL;
             parent.success('ok');
 
     	}
@@ -103,7 +132,7 @@ console.log('sent request for listing images');
 
 
 
-this.list_servers=function()
+this.list_servers=function(servers_success)
 {
 	//request we need to make
 	request_service = "/servers/detail";
@@ -115,6 +144,7 @@ xhr.onload = function () {
     // do something to response
     //console.log(this.responseText);
      var response = JSON.parse(this.responseText);
+     servers_success(response);
      for(i=0;i<response.servers.length;i++)
      {
 

@@ -2,18 +2,30 @@
 <html>
 <head>
 	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	 <meta http-equiv="refresh" content="15">
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 
 	<script src="js/jq.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery_mustache.js"></script>
+	<script src="js/logoff.js"></script>
+
 	
 
+<script src="js/jquery_mustache.js"></script>
+<script src="js/mustache.js"></script>
 	<script type="text/javascript" src="js/stack.js">
 	
 	</script>
 	<script type="text/javascript" src="js/instances.js"></script>
 	</head>
 	<body>
+		<a style="float:right" id="logoff">Log Off</a><br/>
+		<!--
+		Display list of instances , this be loaded from template and processed by mustache 
+		 /-->
+		<div id="showinstances">
+			Loading..
+		</div>
 	</body>
 	</html>

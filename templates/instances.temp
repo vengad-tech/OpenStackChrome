@@ -1,3 +1,4 @@
+<script id="instances" type="text/html">
 <table class="table table-hover">
   <thead>
   <tr> 
@@ -7,7 +8,7 @@
 
   </thead>
   <tbody>
-  {{#instances}}
+  {{#servers}}
   <tr>
 	  <td>
 	  {{name}}
@@ -17,6 +18,7 @@
 	  {{status}}
 	  </td>
   </tr>
-  {{/instances}}
+  {{/servers}}
   </tbody>
 </table>
+</script>

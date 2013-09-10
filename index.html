@@ -5,6 +5,8 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 
 	<script src="js/jq.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery_mustache.js"></script>
 	
@@ -14,15 +16,15 @@
 	</script>
 	<script type="text/javascript" src="js/events.js"></script>
 	</head>
-	<body>
+	<body >
 	
   <fieldset>
     <legend>OpenStack Login</legend>
     
-    Host:<input id="url" type="text" placeholder="http://localhost/" value="http://localhost:5000/">
-    Username:<input id = "username" type="text" placeholder="username" value="admin">
-    Password:<input id="password" type="text" placeholder="password" value="admin">
-     tentantID:<input id="tentantid" type="text" placeholder="tenantid" value="45ab8b75ab3e4d3b9ec34d37886e6ba8">
+    Host:<input id="url" type="text" placeholder="http://localhost/" value="http://localhost:5000/"><br/>
+    Username:<input id = "username" type="text" placeholder="username" value="admin"><br/>
+    Password:<input id="password" type="text" placeholder="password" value="admin"><br/>
+     tentantID:<input id="tentantid" type="text" placeholder="tenantid" value="45ab8b75ab3e4d3b9ec34d37886e6ba8"><br/>
    
     <button id="loginBtn"  class="btn">Login</button>
   </fieldset>
