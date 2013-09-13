@@ -19,6 +19,11 @@
 	  </td>
   </tr>
   {{/servers}}
+
   </tbody>
 </table>
+
+  {{^servers}}
+  <font color="red">No Active Instances<br/></font>
+  {{/servers}}
 </script>
