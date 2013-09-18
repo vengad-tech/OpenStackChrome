@@ -1,0 +1,41 @@
+<script id="hosts" type="text/html">
+<table class="table table-hover">
+  <thead>
+  <tr> 
+  		<th>Host Name</th>
+  		<th>CPU %</th>
+      <th>Memory %</th>
+      <th>Disk %</th>
+ </tr>
+
+  </thead>
+  <tbody>
+  {{#hosts}}
+  <tr>
+	  <td>
+	  {{name}}
+
+	  </td>
+	  <td>
+	  {{cpu}}
+	  </td>
+
+    <td>
+    {{memory}}
+    </td>
+
+    <td>
+    {{disk}}
+    </td>
+
+
+  </tr>
+  {{/hosts}}
+
+  </tbody>
+</table>
+
+  {{^hosts}}
+  <font color="red">No Active Hosts<br/></font>
+  {{/hosts}}
+</script>

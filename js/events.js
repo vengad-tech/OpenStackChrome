@@ -1,7 +1,7 @@
 //check if already logged in
 if(localStorage.isLogin=="true")
 {
-window.location.assign("./instances.html");
+window.location.assign("./menu.html");
 }
 
 $(document).ready(function(){
@@ -29,7 +29,7 @@ if(status=="ok")
 	//redirecting to page that displays running instances
 	localStorage.isLogin = true;
 
-	window.location.assign("./instances.html")
+	window.location.assign("./menu.html")
 
 }
 else

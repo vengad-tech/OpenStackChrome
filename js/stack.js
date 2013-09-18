@@ -8,7 +8,7 @@ this.settings.username = "admin"
 this.settings.password = "admin"
 this.settings.tenantId = "45ab8b75ab3e4d3b9ec34d37886e6ba8"
 this.settings.access_token =""
-this.settings.hosts = ""
+this.settings.hosts = []
 
 
 
@@ -31,7 +31,7 @@ this.Init =function(url,username,password,tenantId,success)
 }
 
 
-//Intialize to call when we are already authorized
+//Intialize to call when we are already authorized , i.e load  credentials from an already logged in session
 this.Load =function()
 {
 
@@ -168,12 +168,13 @@ console.log('sent request for listing images');
 }
 
 //get list of hosts available
-this.list_hosts=function()
+this.list_hosts=function(host_success)
 {
     //request we need to make
+    this.settings.hosts = [];
     request_service = "/os-hosts";
     hosts = [];
-    parent = this;
+   var  parent = this;
     var xhr = new XMLHttpRequest();
 xhr.open('GET', this.settings.nova_url+request_service, true);
 xhr.setRequestHeader('Content-type', 'application/json');
@@ -187,26 +188,41 @@ xhr.onload = function () {
      {
 
         host = response.hosts[i];
-        //console.log(host.host_name);
         hosts.push(host.host_name);
+        console.log(host.host_name);
+        
+        //we are sending the required callback to the last hostname describe that inimates our function
+        //caller regarding the completion of function
+       
 
      }
-hosts = $.unique(hosts);
+     hosts = $.unique(hosts);
+     for(i = 0 ; i < hosts.length ; i++)
+     {
+         if(i == (hosts.length-1))
+        parent.list_host_detail(hosts[i], host_success);
+    else
+        parent.list_host_detail(hosts[i], function(){});
+
+     }
+
 console.dir(hosts);
-parent.settings.hosts = hosts ; 
+
    
 
 
 
 
 };
+xhr.send();
 }
 //get list of hosts available
-this.list_host_detail=function(hostname)
+this.list_host_detail=function(hostname,host_success)
 {
     //request we need to make
+    console.log("Fetching details of host"+hostname);
     request_service = "/os-hosts/"+hostname;
-    parent = this;
+    var parent = this;
     var xhr = new XMLHttpRequest();
 xhr.open('GET', this.settings.nova_url+request_service, true);
 xhr.setRequestHeader('Content-type', 'application/json');
@@ -229,15 +245,21 @@ xhr.onload = function () {
         
 
      }
-     parent.settings.hosts[hostname]['memory']=(usage['(used_now)'][0] / usage['(total)'][0])*100;  
-     parent.settings.hosts[hostname]['cpu']=(usage['(used_now)'][1] / usage['(total)'][1])*100; 
-     parent.settings.hosts[hostname]['disk']=(usage['(used_now)'][2] / usage['(total)'][2])*100; 
+     //caculating the percentage of usage of resources
+     parent.settings.hosts.push({"name":hostname ,  "memory": Math.round((usage['(used_now)'][0] / usage['(total)'][0])*100) , 
 
+     "cpu":  Math.round((usage['(used_now)'][1] / usage['(total)'][1])*100) , 
+
+     "disk":  Math.round((usage['(used_now)'][2] / usage['(total)'][2])*100)  
+
+ });
+  
 
 
 
 
 console.dir(parent.settings.hosts[hostname]);
+host_success(parent.settings.hosts);
 
    
 
