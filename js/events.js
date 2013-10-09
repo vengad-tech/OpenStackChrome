@@ -6,6 +6,16 @@ if (localStorage.isLogin == "true") {
 $(document).ready(function() {
 
 
+	//setting initial resource limits
+	if (!localStorage.alert) {
+
+		localStorage.cpu = 100;
+		localStorage.disk = 100;
+		localStorage.memory = 100;
+
+	}
+
+
 
 	console.log("Extension loaded");
 	$("#loginBtn").click(function() {
